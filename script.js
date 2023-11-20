@@ -4,15 +4,8 @@ const apiKey = "bf55e0ab799948498c325935231911"
 const inputSearch = document.getElementById('inputSearch')
 const searchButton = document.getElementById('searchButton')
 
-const requestInit = () => {
-    fetch(endpoint + `key=${apiKey}` + `&q=indonesia`)
-    .then(res => res.json())
-    .then(res => updateWeather(res))
-}
-requestInit()
-
-const requestDataWeather = () => {
-    fetch(endpoint + `key=${apiKey}` + `&q=${inputSearch.value}`)
+const requestDataWeather = (input) => {
+    fetch(endpoint + `key=${apiKey}` + `&q=${input}`)
     .finally(
         document.querySelector('.loading').style.display = 'flex'
     )
@@ -30,10 +23,10 @@ const updateWeather = (data) => {
     document.getElementById('location').innerHTML = data.location.name
     document.getElementById('time').innerHTML = data.location.localtime
     document.getElementById('condition').innerHTML = data.current.condition.text
-    console.log(document.getElementById('icon').setAttribute("src", `${data.current.condition.icon}`))
+    document.getElementById('icon').setAttribute("src", `${data.current.condition.icon}`)
 }
 
-searchButton.addEventListener('click', requestDataWeather)
-inputSearch.addEventListener('keydown', function(e) { if(e.key == "Enter") requestDataWeather() })
+searchButton.addEventListener('click', function() {requestDataWeather(inputSearch.value)})
+inputSearch.addEventListener('keydown', function(e) { if(e.key == "Enter") requestDataWeather(inputSearch.value) })
 
-
+requestDataWeather("indonesia")
